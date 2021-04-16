@@ -1,0 +1,3 @@
+{
+    "mongoURI": "mongodb://localhost/cms_test"
+}
