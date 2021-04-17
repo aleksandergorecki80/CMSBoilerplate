@@ -8,6 +8,8 @@ const { validationResult } = require('express-validator');
 
 const { User,  validateUser } = require('../../models/UserModel');
 
+
+
 // @route   GET api/users
 // @desc    Test route
 // @access  Public
