@@ -4,9 +4,9 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const gravatar = require('gravatar');
-const { validationResult } = require('express-validator');
+const { check, validationResult } = require('express-validator');
 
-const { User,  validateUser } = require('../../models/UserModel');
+const User = require('../../models/UserModel');
 
 
 
@@ -17,10 +17,14 @@ const { User,  validateUser } = require('../../models/UserModel');
 router.get('/', async (req, res) => res.send('User route'));
 
 
-// @route   GET api/users
-// @desc    Test route
+// @route   POST api/users
+// @desc    Register user
 // @access  Public
-router.post('/', validateUser, async (req, res) => {
+router.post('/', [
+    check('name', 'Name is required').not().isEmpty().trim(),
+    check('email', 'Please include a valid email').isEmail(),
+    check('password', 'Password must be at least 6 characters long').isLength({ min: 6 })
+], async (req, res) => {
     const errors = validationResult(req);
     if(!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.mapped() })
@@ -49,8 +53,6 @@ router.post('/', validateUser, async (req, res) => {
 
          const salt = await bcrypt.genSalt(10);
          user.password = await bcrypt.hash(password, salt);
-
-         console.log(user)
          await user.save();
 
          const payload = {
