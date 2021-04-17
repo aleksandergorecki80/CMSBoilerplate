@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { check } = require('express-validator');
 
 const UserShema = new mongoose.Schema({
     name: {
@@ -25,4 +26,10 @@ const UserShema = new mongoose.Schema({
 
 const User = mongoose.model('user', UserShema);
 
-module.exports = User;
+const validateUser = [
+        check('name', 'Name is required').not().isEmpty().trim(),
+        check('email', 'Please include a valid email').isEmail(),
+        check('password', 'Password must be at least 6 characters long').isLength({ min: 6 })
+    ];
+
+module.exports = { User, validateUser };

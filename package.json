@@ -20,9 +20,9 @@
     "supertest": "^6.1.3"
   },
   "scripts": {
-    "test": "jest --watchAll --verbose",
+    "test": "SET \"NODE_ENV=test\"&&jest --watchAll --verbose",
     "server": "nodemon server",
-    "test-serv": "SET \"NODE_ENV=test\"&& nodemon server.js "
+    "dev-server": "SET \"NODE_ENV=dev\"&& nodemon server.js "
   },
   "repository": {
     "type": "git",

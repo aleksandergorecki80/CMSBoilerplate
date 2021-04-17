@@ -1,2 +1,6 @@
 /node_modules
 /config/default.json
+/config/dev.json
+/config/test.json
+
+.gitignore
