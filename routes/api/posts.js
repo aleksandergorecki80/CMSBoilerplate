@@ -99,7 +99,7 @@ router.delete('/:id', auth, async (req, res) => {
     }
 });
 
-// @route   POST api/posts/like/:id
+// @route   PUT api/posts/like/:id
 // @desc    Like a post
 // @access  private
 
@@ -121,7 +121,7 @@ router.put('/like/:id', auth, async (req, res) => {
     }
 }); 
 
-// @route   POST api/posts/unlike/:id
+// @route   PUT api/posts/unlike/:id
 // @desc    Unlike a post
 // @access  private
 
@@ -145,5 +145,74 @@ router.put('/unlike/:id', auth, async (req, res) => {
         res.status(500).send('Server Error');
     }
 }); 
+
+
+// @route   PUT api/posts/comment/:id
+// @desc    Create a comment on a post
+// @access  Private
+
+router.put('/comment/:id', [ auth, [ 
+    check('text', 'Text is required').not().isEmpty(),
+    check('title', 'Title must be at least 6 character long').isLength({ min: 6, max: 255 })
+ ] ] , async (req, res) => {
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+        return res.status(400).json({ errors: errors.mapped() });
+    }
+
+    try {
+        const user = await User.findById(req.user.id).select({ 'password': 0 });
+        const post = await Post.findById(req.params.id);
+
+        const newComment = {
+            user: req.user.id,
+            userName: user.name,
+            title: req.body.title,
+            text: req.body.text,
+            avatar: user.avatar
+        };
+
+        post.comments.unshift(newComment);
+        await post.save();
+        res.json(post);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }  
+});
+
+// @route   PUT api/posts/comment/:id/:comment_id
+// @desc    Create a comment on a post
+// @access  Private
+
+router.put('/comment/:id/:comment_id', auth, async (req, res) => {
+    try {
+        const post = await Post.findById(req.params.id);
+
+        // Pull out a comment
+        const comment = post.comments.find(comment =>  req.params.comment_id === comment._id.toString());
+        
+        // Make sure comment exist
+        if(!comment){
+            return res.status(404).json({ msg: 'Comment does not exist' });
+        }
+
+        // Check the user
+        if(comment.user.toString() !== req.user.id){
+            return res.status(401).json({ msg: 'User not authorised' });
+        }
+
+        // Get remove index
+        const removeIndex = post.comments.map(comment => comment.user.toString().indexOf(req.user.id));
+        post.comments.splice(removeIndex, 1);
+
+        await post.save();
+        res.send(post);
+
+    } catch (err) {
+        console.error(err.message); 
+        res.status(500).send('Server error');
+    }
+});
 
 module.exports = router;
