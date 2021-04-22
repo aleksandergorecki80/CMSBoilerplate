@@ -147,11 +147,11 @@ router.put('/unlike/:id', auth, async (req, res) => {
 }); 
 
 
-// @route   PUT api/posts/comment/:id
+// @route   POST api/posts/comment/:id
 // @desc    Create a comment on a post
 // @access  Private
 
-router.put('/comment/:id', [ auth, [ 
+router.post('/comment/:id', [ auth, [ 
     check('text', 'Text is required').not().isEmpty(),
     check('title', 'Title must be at least 6 character long').isLength({ min: 6, max: 255 })
  ] ] , async (req, res) => {
@@ -181,11 +181,11 @@ router.put('/comment/:id', [ auth, [
     }  
 });
 
-// @route   PUT api/posts/comment/:id/:comment_id
-// @desc    Create a comment on a post
+// @route   DELETE api/posts/comment/:id/:comment_id
+// @desc    Remove a comment on from post
 // @access  Private
 
-router.put('/comment/:id/:comment_id', auth, async (req, res) => {
+router.delete('/comment/:id/:comment_id', auth, async (req, res) => {
     try {
         const post = await Post.findById(req.params.id);
 

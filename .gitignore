@@ -3,4 +3,6 @@
 /config/dev.json
 /config/test.json
 
+/client/node_modules
+
 .gitignore
