@@ -8,7 +8,6 @@ const { check, validationResult } = require('express-validator');
 // @route   GET api/profile/me
 // @desc    Get curent user profile
 // @access  Private
-
 router.get('/me', auth, async (req, res) => {
   const profile = await Profile.findOne({ user: req.user.id }).populate(
     'user',
@@ -29,7 +28,6 @@ router.get('/me', auth, async (req, res) => {
 // @route   POST api/profile/
 // @desc    Create or update user profile
 // @access  Private
-
 router.post(
   '/',
   [auth, [check('status', 'Status is required').not().isEmpty()]],
@@ -48,7 +46,7 @@ router.post(
       let profile = await Profile.findOne({ user: req.user.id });
       if (profile) {
         // Update
-        profile = await Profile.findByIdAndUpdate(
+        profile = await Profile.findOneAndUpdate(
           { user: req.user.id },
           { $set: profileFilds },
           { new: true }
@@ -63,8 +61,54 @@ router.post(
       console.error(err.message);
       return res.status(500).send('Server error');
     }
-    res.send(profileFilds);
   }
 );
+
+// @route   GET api/profile/
+// @desc    Get all profiles
+// @access  Private
+router.get('/', auth, async (req, res) => {
+  try {
+    const profiles = await Profile.find().populate('user', ['name', 'avatar']);
+    return res.json(profiles);
+  } catch (err) {
+    console.error(err.message);
+    return res.status(500).send('Server error');
+  }
+});
+
+// @route   GET api/profile/user/:user_id
+// @desc    Get profile by user id
+// @access  Private
+router.get('/user/:user_id', auth, async (req, res) => {
+  try {
+    const profile = await Profile.findOne({ user: req.params.user_id}).populate('user', ['name', 'avatar']);
+    if(!profile) return res.status(400).json({ msg: 'Profile not found' });
+    return res.json(profile);
+  } catch (err) {
+    console.error(err.message);
+    if(err.kind == 'ObjectId'){
+      return res.status(400).json({ msg: 'Profile not found' }); 
+    }
+    return res.status(500).send('Server error');
+  }
+});
+
+// @route   DELETE api/profile
+// @desc    Delete profile, user and posts
+// @access  Private
+router.delete('/', auth, async (req, res) => {
+  try {
+    // Remove profile
+    await Profile.findOneAndRemove({ user: req.user.id });
+    // Remove user
+    await User.findOneAndRemove({ _id: req.user.id });
+
+    res.json({ msg: 'User deleted' });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+})
 
 module.exports = router;
