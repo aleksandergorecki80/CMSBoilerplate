@@ -1,4 +1,4 @@
-import { GET_PROFILE } from "../actions/constants";
+import { GET_PROFILE, PROFILE_ERROR } from "../actions/constants";
 
 const initialState = {
     profile: null,
@@ -14,6 +14,12 @@ const profile = ( state=initialState, action) => {
             return {
                 ...state,
                 profile: payload,
+                loading: false
+            }
+        case PROFILE_ERROR:
+            return {
+                ...state,
+                error: payload,
                 loading: false
             }
         default:
