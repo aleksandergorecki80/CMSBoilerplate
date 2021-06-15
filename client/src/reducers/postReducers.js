@@ -1,4 +1,13 @@
-import { GET_POSTS, POST_ERROR, UPDATE_LIKES, DELETE_POST, ADD_POST } from '../actions/constants';
+import {
+  GET_POSTS,
+  POST_ERROR,
+  UPDATE_LIKES,
+  DELETE_POST,
+  ADD_POST,
+  GET_POST,
+  ADD_COMMENT,
+  REMOVE_COMMENT
+} from '../actions/constants';
 
 const initialState = {
   posts: [],
@@ -17,20 +26,26 @@ const post = (state = initialState, action) => {
         posts: payload,
         loading: false,
       };
+    case GET_POST:
+      return {
+        ...state,
+        post: payload,
+        loading: false,
+      };
     case ADD_POST:
       return {
-      ...state,
-      posts: [payload, ...state.posts],
-      loading: false
-      }
+        ...state,
+        posts: [payload, ...state.posts],
+        loading: false,
+      };
     case DELETE_POST:
       return {
         ...state,
         posts: state.posts.filter((post) => {
           return post._id !== payload;
         }),
-        loading: false
-      }
+        loading: false,
+      };
     case POST_ERROR:
       return {
         ...state,
@@ -41,14 +56,32 @@ const post = (state = initialState, action) => {
       return {
         ...state,
         posts: state.posts.map((post) => {
-          return post._id === payload.postId ? { ...post, likes: payload.likes} : post;
+          return post._id === payload.postId
+            ? { ...post, likes: payload.likes }
+            : post;
         }),
+        loading: false,
+      };
+    case ADD_COMMENT:
+      return {
+        ...state,
+        post: { ...state.post, comments: payload },
         loading: false
+      };
+    case REMOVE_COMMENT: 
+      return {
+        ...state,
+        post: {
+          ...state.post,
+          comments: state.post.comments.filter((comment) => {
+            return comment._id !== payload;
+          }),
+          loading: false
+        }
       }
     default:
       return state;
   }
 };
-
 
 export default post;

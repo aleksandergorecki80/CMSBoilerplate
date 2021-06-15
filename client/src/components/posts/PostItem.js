@@ -8,11 +8,14 @@ import { addLike, removeLike, deletePost } from '../../actions/postActions';
 const PostItem = ({
   auth,
   post: { _id, user, userName, avatar, title, text, likes, comments, date },
-  addLike, removeLike, deletePost
+  addLike, 
+  removeLike, 
+  deletePost,
+  showActions
 }) => {
   return (
     <Fragment>
-      <h3>{title}</h3>
+      <h3><Link to={`posts/${_id}`}>{title}</Link></h3>
       <p>{text}</p>
       <div>
         Posted on: <Moment format="YYYY/MM/DD">{date}</Moment> by:{' '}
@@ -30,6 +33,10 @@ const PostItem = ({
     </Fragment>
   );
 };
+
+PostItem.defaultProps = {
+  showActions: true
+}
 
 PostItem.propTypes = {
   post: PropTypes.object.isRequired,

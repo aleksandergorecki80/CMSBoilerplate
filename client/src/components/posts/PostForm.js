@@ -16,6 +16,7 @@ const PostForm = ({ addPost }) => {
     }
     return (
         <div>
+            <h3>Add a new post</h3>
             <form onSubmit={e => onSubmit(e)}>
                 <input 
                     type='text' 

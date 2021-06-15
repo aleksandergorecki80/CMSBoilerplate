@@ -14,6 +14,7 @@ const Posts = ({ getPosts, post: { posts, loading } }) => {
 
   return loading ? <Spinner /> : (
         <Fragment>
+          <PostForm />
             <div>
                 {posts.map((post) => {
                     return (
@@ -21,7 +22,6 @@ const Posts = ({ getPosts, post: { posts, loading } }) => {
                     )
                 })}
             </div>
-            <PostForm />
         </Fragment>
     );
 };
