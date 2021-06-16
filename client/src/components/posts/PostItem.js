@@ -11,11 +11,14 @@ const PostItem = ({
   addLike, 
   removeLike, 
   deletePost,
-  showActions
+  showLink
 }) => {
   return (
     <Fragment>
-      <h3><Link to={`posts/${_id}`}>{title}</Link></h3>
+      {
+        showLink ? <h3><Link to={`posts/${_id}`}>{title}</Link></h3> : <h3>{title}</h3>
+      }
+      
       <p>{text}</p>
       <div>
         Posted on: <Moment format="YYYY/MM/DD">{date}</Moment> by:{' '}
@@ -35,7 +38,7 @@ const PostItem = ({
 };
 
 PostItem.defaultProps = {
-  showActions: true
+  showLink: true
 }
 
 PostItem.propTypes = {
