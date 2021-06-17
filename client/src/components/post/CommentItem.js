@@ -10,12 +10,13 @@ const CommentItem = ({
     deleteComment,
     auth
 }) => {
+
   return (
     <div>
       <h3>{title}</h3>
       <p>{text}</p>
       <p>Added by: {userName} on <Moment format="DD/MM/YYYY">{date}</Moment></p>
-      { !auth.loading && user === auth.user._id && (
+      { !auth.loading && auth.token && user === auth.user._id && (
           <button onClick={e => deleteComment(postId, _id)}>Delete</button>
       ) }
     </div>

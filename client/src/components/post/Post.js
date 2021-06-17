@@ -7,13 +7,14 @@ import PostItem from '../posts/PostItem';
 import CommentForm from './CommentForm';
 import CommentItem from './CommentItem';
 
-const Post = ({ getPost, post: { post, loading}, match }) => {
+const Post = ({ getPost, post: { post, loading }, match }) => {
      useEffect(() => {
         getPost(match.params.id);
      }, [getPost]);    
+     console.log(post)
     return (
         loading || post === null ? <Spinner /> : (<Fragment>
-            <PostItem post={post} showLink={false} />
+            <PostItem post={post} showLink={false} showActions={true} />
             <CommentForm postId={post._id} />
             <div>
                 {post.comments.map(comment => (

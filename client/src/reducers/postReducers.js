@@ -60,6 +60,7 @@ const post = (state = initialState, action) => {
             ? { ...post, likes: payload.likes }
             : post;
         }),
+        post: state.post !== null && {...state.post, likes: payload.likes},
         loading: false,
       };
     case ADD_COMMENT:
