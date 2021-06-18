@@ -1,0 +1,11 @@
+// body {
+//     background-color: aqua !important;
+// }
+
+h3, h3 a {
+    color: $headers;
+    &:hover{
+        color: $headers !important;
+        text-decoration: underline;
+    }
+}

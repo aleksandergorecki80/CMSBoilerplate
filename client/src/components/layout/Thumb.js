@@ -7,7 +7,9 @@ const ThumbIcon = ({ rotate }) => {
             <img src={thumb} 
                 style={{
                      transform: `rotate(${rotate}deg)`,
-                     cursor: 'pointer'
+                     cursor: 'pointer',
+                     width: '25px',
+                     margin: '0 5px'
                     }}
                 alt={'thumb'}
             />

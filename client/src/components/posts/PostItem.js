@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 import Moment from 'react-moment';
 import { connect } from 'react-redux';
 import { addLike, removeLike, deletePost } from '../../actions/postActions';
-import { Button } from 'react-bootstrap';
+import { Button, Card } from 'react-bootstrap';
+
 import ThumbIcon from '../layout/Thumb';
 
 const PostItem = ({
@@ -18,39 +19,58 @@ const PostItem = ({
 }) => {
   return (
     <Fragment>
-      {showLink ? (
-        <h3>
-          <Link to={`posts/${_id}`}>{title}</Link>
-        </h3>
-      ) : (
-        <h3>{title}</h3>
-      )}
-
-      <p>{text}</p>
-      <div>
-        Posted on: <Moment format="YYYY/MM/DD">{date}</Moment> by:{' '}
-        <span>{userName}</span>
-        {showActions &&
-          auth.user &&
-          !auth.loading &&
-          user === auth.user._id && (
-            <button onClick={(e) => deletePost(_id)}>DELETE</button>
-          )}
-      </div>
-      <div>
-        Likes: {likes.length}
-        {showActions && (
-          <Fragment>
-            <div onClick={(e) => addLike(_id)}>
-              <ThumbIcon onClick={(e) => addLike(_id)} />
-            </div>
-            <div onClick={(e) => removeLike(_id)}>
-              <ThumbIcon rotate={180} onClick={(e) => removeLike(_id)} />
-            </div>
-          </Fragment>
+      <Card className="mb-3 mt-3">
+        <Card.Body>
+          <Card.Title className="d-flex justify-content-between">
+            {showLink ? (
+              <h3>
+                <Link
+                  to={`posts/${_id}`}
+                  style={{
+                    textDecoration: 'none',
+                  }}
+                >
+                  {title}
+                </Link>
+              </h3>
+            ) : (
+              <h3>{title}</h3>
+            )}
+        {showActions && auth.user && !auth.loading && user === auth.user._id && (
+          <p>
+            <Button onClick={(e) => deletePost(_id)} variant="danger">
+              DELETE
+            </Button>
+          </p>
         )}
-      </div>
-      <div>{comments.length > 0 && <p>Comments: {comments.length}</p>}</div>
+          </Card.Title>
+          <Card.Text>{text}</Card.Text>
+          {showLink && (
+            <Card.Link href="#">
+              <Link to={`posts/${_id}`}>Read more</Link>
+            </Card.Link>
+          )}
+          <footer className="blockquote-footer author-footer">
+            Posted on: <Moment format="YYYY/MM/DD">{date}</Moment> by:
+            <span> {userName}</span>
+          </footer>
+        </Card.Body>
+        <Card.Footer className="text-muted d-flex">
+          
+          {showActions && (
+            <Fragment>
+              <div onClick={(e) => addLike(_id)}>
+                <ThumbIcon onClick={(e) => addLike(_id)} />
+              </div>
+              <div onClick={(e) => removeLike(_id)}>
+                <ThumbIcon rotate={180} onClick={(e) => removeLike(_id)} />
+              </div>
+            </Fragment>
+          )}
+          <span className="me-4">Likes: {likes.length} </span>
+          <span>Comments: {comments.length}</span>
+        </Card.Footer>
+      </Card>
     </Fragment>
   );
 };

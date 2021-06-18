@@ -9,7 +9,8 @@ import Dashboard from './components/dashboard/Dashboard';
 import Posts from './components/posts/Posts';
 import Post from './components/post/Post';
 import PrivateRoute from './components/routing/PrivateRoute';
-import './App.css';
+import './App.scss';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 // Redux
 import { Provider } from 'react-redux';
