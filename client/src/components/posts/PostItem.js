@@ -44,12 +44,12 @@ const PostItem = ({
           </p>
         )}
           </Card.Title>
-          <Card.Text>{text}</Card.Text>
-          {showLink && (
-            <Card.Link href="#">
-              <Link to={`posts/${_id}`}>Read more</Link>
-            </Card.Link>
+          <Card.Text>
+            {showLink ? `${text.substr(0, 100)} ... ` : text}  
+            {showLink && (
+              <Link to={`posts/${_id}`}>Read more</Link> 
           )}
+          </Card.Text>
           <footer className="blockquote-footer author-footer">
             Posted on: <Moment format="YYYY/MM/DD">{date}</Moment> by:
             <span> {userName}</span>

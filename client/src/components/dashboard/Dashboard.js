@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Spinner from '../layout/Spinner';
 import { getCurrentProfile } from '../../actions/profileActions';
+import PostForm from './PostForm';
 
 
 const Dashboard = ( { getCurrentProfile, auth: { user }, profile: { profile, loading} } ) => {
@@ -15,14 +16,8 @@ const Dashboard = ( { getCurrentProfile, auth: { user }, profile: { profile, loa
         <Fragment>
             <h1>Dashboard</h1>
             <p>Welcome { user && user.name }</p>
-            { profile !== null ? (
-                <Fragment>Has</Fragment>
-            ) : (
-                <Fragment>
-                    <p>You have not yet set up a profile please add some info.</p>
-                    <Link to='/dreate-profile'>Create profile</Link>
-                </Fragment>) 
-            }
+
+            <PostForm />
         </Fragment>
 
 }

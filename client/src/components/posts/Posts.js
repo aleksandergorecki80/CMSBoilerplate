@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import PostItem from './PostItem';
 import Spinner from '../layout/Spinner';
 import { getPosts } from '../../actions/postActions';
-import PostForm from './PostForm';
 
 const Posts = ({ getPosts, post: { posts, loading } }) => {
   useEffect(() => {
@@ -14,7 +13,6 @@ const Posts = ({ getPosts, post: { posts, loading } }) => {
 
   return loading ? <Spinner /> : (
         <Fragment>
-          <PostForm />
             <div>
                 {posts.map((post) => {
                     return (
