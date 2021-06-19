@@ -16,8 +16,9 @@ const PostItem = ({
   deletePost,
   showLink,
   showActions,
+  singlePost
 }) => {
-  return (
+ return (
     <Fragment>
       <Card className="mb-3 mt-3">
         <Card.Body>

@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect } from 'react';
+import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Spinner from '../layout/Spinner';
@@ -11,7 +12,9 @@ const Post = ({ getPost, post: { post, loading }, match }) => {
      useEffect(() => {
         getPost(match.params.id);
      }, [getPost]);    
-     console.log(post)
+     if(post === null){
+         return <Redirect to="/posts" />;
+     }
     return (
         loading || post === null ? <Spinner /> : (<Fragment>
             <PostItem post={post} showLink={false} showActions={true} />

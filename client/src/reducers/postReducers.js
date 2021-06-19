@@ -44,6 +44,7 @@ const post = (state = initialState, action) => {
         posts: state.posts.filter((post) => {
           return post._id !== payload;
         }),
+        post: null,
         loading: false,
       };
     case POST_ERROR:
