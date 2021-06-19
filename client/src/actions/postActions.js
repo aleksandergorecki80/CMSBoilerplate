@@ -8,7 +8,8 @@ import {
     ADD_POST,
     GET_POST,
     ADD_COMMENT,
-    REMOVE_COMMENT
+    REMOVE_COMMENT,
+    CLEAN_POST
 } from './constants';
 
 // Get posts
@@ -162,3 +163,9 @@ export const deleteComment = (postId, commentId) => async dispatch => {
         })
     }
 }
+
+export const cleanPost = () => dispatch => {
+  dispatch({
+    type: CLEAN_POST,
+  });
+};

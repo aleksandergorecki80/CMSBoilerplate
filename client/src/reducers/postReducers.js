@@ -6,7 +6,8 @@ import {
   ADD_POST,
   GET_POST,
   ADD_COMMENT,
-  REMOVE_COMMENT
+  REMOVE_COMMENT,
+  CLEAN_POST
 } from '../actions/constants';
 
 const initialState = {
@@ -80,6 +81,12 @@ const post = (state = initialState, action) => {
           }),
           loading: false
         }
+      }
+    case CLEAN_POST:
+      return {
+        ...state,
+        loading: false,
+        post: null
       }
     default:
       return state;

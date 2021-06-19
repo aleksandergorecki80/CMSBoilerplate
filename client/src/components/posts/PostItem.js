@@ -1,9 +1,9 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Moment from 'react-moment';
 import { connect } from 'react-redux';
-import { addLike, removeLike, deletePost } from '../../actions/postActions';
+import { addLike, removeLike, deletePost, cleanPost } from '../../actions/postActions';
 import { Button, Card } from 'react-bootstrap';
 
 import ThumbIcon from '../layout/Thumb';
@@ -14,9 +14,10 @@ const PostItem = ({
   addLike,
   removeLike,
   deletePost,
+  cleanPost,
   showLink,
   showActions,
-  singlePost
+  match
 }) => {
  return (
     <Fragment>
@@ -95,6 +96,6 @@ const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps, { addLike, removeLike, deletePost })(
+export default connect(mapStateToProps, { addLike, removeLike, deletePost, cleanPost })(
   PostItem
 );

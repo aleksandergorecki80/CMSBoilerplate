@@ -7,23 +7,6 @@ import { Nav } from 'react-bootstrap';
 
 const Navbar = ({ auth: { isAuthenticated, loading, user }, logout }) => {
   const authLinks = (
-    // <Fragment>
-    //   <ul>
-    //     <li>
-    //       <Link to="/posts">Home</Link>
-    //     </li>
-    //     <li>
-    //       <Link to="/dashboard">Dashboard</Link>
-    //     </li>
-    //     <li>
-    //       <a href="#!" onClick={logout}>
-    //         {/* Logout */}
-    //         {user && user.name}: Logout
-    //       </a>
-    //     </li>
-    //   </ul>
-    // </Fragment>
-
     <Nav className="justify-content-end me-3" activeKey="/home">
       <Nav.Item>
         <Link to="/posts" className="nav-link">

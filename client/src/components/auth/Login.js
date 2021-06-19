@@ -3,6 +3,7 @@ import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { login } from '../../actions/authActions';
+import { Form, Button } from 'react-bootstrap';
 
 const Login = ({ login, isAuthenticated }) => {
   const [formData, setFormData] = useState({
@@ -31,33 +32,40 @@ if(isAuthenticated) {
 
   return (
     <Fragment>
-      <h1>Sign In</h1>
-      <form onSubmit={(event) => onSubmit(event)}>
-        <div className="form-group">
-          <input
-            type="email"
-            placeholder="Email Address"
-            name="email"
-            value={formData.email}
-            onChange={(event) => onChange(event)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <input
-            type="password"
-            placeholder="Password"
-            name="password"
-            value={formData.password}
-            onChange={(event) => onChange(event)}
-            required
-          />
-        </div>
-        <input type="submit" value="Log in" />
-      </form>
-      <p>
-        Do not have an account? <Link to="/register">Sign Up</Link>
-      </p>
+      <h2 className="text-success fw-bold">Sign In</h2>
+<Form onSubmit={(event) => onSubmit(event)}>
+  <Form.Group controlId="formBasicEmail">
+    <Form.Label>Email address</Form.Label>
+    <Form.Control 
+      type="email" 
+      placeholder="Enter email"
+      name="email"
+      value={formData.email}
+      onChange={(event) => onChange(event)}
+      required 
+    />
+    <Form.Text className="text-muted">
+      We'll never share your email with anyone else.
+    </Form.Text>
+  </Form.Group>
+
+  <Form.Group controlId="formBasicPassword">
+    <Form.Label>Password</Form.Label>
+    <Form.Control 
+      type="password" 
+      placeholder="Password"
+      name="password"
+      value={formData.password}
+      onChange={(event) => onChange(event)}
+      required
+    />
+  </Form.Group>
+  <Button variant="primary" type="submit" className="mt-3">
+    Submit
+  </Button>
+</Form>
+<p>Do not have an account? <Link to="/register">Sign Up</Link></p>
+
     </Fragment>
   );
 };

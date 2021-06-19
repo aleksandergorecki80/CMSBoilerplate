@@ -6,7 +6,7 @@ import PostItem from './PostItem';
 import Spinner from '../layout/Spinner';
 import { getPosts } from '../../actions/postActions';
 
-const Posts = ({ getPosts, post: { posts, loading } }) => {
+const Posts = ({ getPosts, post: { posts, loading }, match}) => {
   useEffect(() => {
     getPosts();
   }, [getPosts]);
@@ -15,7 +15,7 @@ const Posts = ({ getPosts, post: { posts, loading } }) => {
         <Fragment>
                 {posts.map((post) => {
                     return (
-                        <PostItem key={post._id} post={post} />
+                        <PostItem key={post._id} post={post} match={match}/>
                     )
                 })}
         </Fragment>
