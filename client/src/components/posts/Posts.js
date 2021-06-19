@@ -13,13 +13,11 @@ const Posts = ({ getPosts, post: { posts, loading } }) => {
 
   return loading ? <Spinner /> : (
         <Fragment>
-            <div>
                 {posts.map((post) => {
                     return (
                         <PostItem key={post._id} post={post} />
                     )
                 })}
-            </div>
         </Fragment>
     );
 };

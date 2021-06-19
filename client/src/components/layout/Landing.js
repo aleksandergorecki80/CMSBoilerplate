@@ -7,11 +7,7 @@ const Landing = ({ isAuthenticated }) => {
     if(isAuthenticated) {
         return <Redirect to='/dashboard' />
     }
-    return (
-        <div>
-            Landing
-        </div>
-    )
+    return <Redirect to='/posts' />
 };
 
 Landing.propTypes = {
