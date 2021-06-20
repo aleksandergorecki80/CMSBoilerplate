@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Moment from 'react-moment';
@@ -20,9 +20,6 @@ const PostItem = ({
   match
 }) => {
 
-useEffect(() => {
-  console.log('use effect');
-}, [])
 
  return (
     <Fragment>

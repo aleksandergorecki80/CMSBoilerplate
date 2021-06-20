@@ -19,9 +19,10 @@ const Navbar = ({ auth: { isAuthenticated, loading, user }, logout }) => {
         </Link>
       </Nav.Item>
       <Nav.Item>
-        <a href="#!" onClick={logout} className="nav-link">
+        <Link to='#' onClick={logout} className="nav-link">
+        {/* <Link to={window.location.pathname} onClick={logout} className="nav-link"> */}
           {user && user.name}: Logout
-        </a>
+        </Link>
       </Nav.Item>
     </Nav>
   );
