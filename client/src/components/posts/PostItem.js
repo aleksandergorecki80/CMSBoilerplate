@@ -39,11 +39,11 @@ const PostItem = ({
               <h3>{title}</h3>
             )}
         {showActions && auth.user && !auth.loading && user === auth.user._id && (
-          <p>
+
             <Button onClick={(e) => deletePost(_id)} variant="danger">
               DELETE
             </Button>
-          </p>
+
         )}
           </Card.Title>
           <Card.Text>
