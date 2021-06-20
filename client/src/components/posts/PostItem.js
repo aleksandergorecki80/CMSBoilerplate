@@ -19,6 +19,11 @@ const PostItem = ({
   showActions,
   match
 }) => {
+
+useEffect(() => {
+  console.log('use effect');
+}, [])
+
  return (
     <Fragment>
       <Card className="mb-3 mt-3">

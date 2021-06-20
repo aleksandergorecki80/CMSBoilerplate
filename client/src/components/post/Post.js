@@ -11,7 +11,6 @@ import CommentItem from './CommentItem';
 const Post = ({ getPost, post: { post, loading }, match }) => {
      useEffect(() => {
         getPost(match.params.id);
-        console.log(match.path)
      }, [getPost]);    
      if(post === null){
          return <Redirect to="/posts" />;
