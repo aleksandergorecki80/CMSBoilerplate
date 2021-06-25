@@ -9,7 +9,8 @@ import {
     GET_POST,
     ADD_COMMENT,
     REMOVE_COMMENT,
-    CLEAN_POST
+    CLEAN_POST,
+    EDIT_POST
 } from './constants';
 
 // Get posts
@@ -90,7 +91,7 @@ export const addPost = (formData) => async dispatch => {
     }
     try {
         const res = await axios.post('/api/posts', formData, config);
-
+console.log(res)
         dispatch({
             type: ADD_POST,
             payload: res.data
@@ -172,6 +173,24 @@ export const cleanPost = () => dispatch => {
 
 
 // Edit post 
-export const editPost = (postId) => async dispatch => {
+export const editPost = (postId, formaData) => async dispatch => {
     console.log(postId)
+    const config = {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }
+    try {
+
+        const res = await axios.put(`/api/posts/edit/${postId}`, config, formaData)
+        dispatch({
+            type: EDIT_POST,
+            payload: res.data
+        })
+    } catch (err) {
+        dispatch({
+            type: POST_ERROR,
+            payload: { msg: err.responseStatusText, status: err.response.status }
+        })
+    }
 }

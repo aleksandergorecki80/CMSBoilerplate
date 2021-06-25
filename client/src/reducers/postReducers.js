@@ -7,7 +7,8 @@ import {
   GET_POST,
   ADD_COMMENT,
   REMOVE_COMMENT,
-  CLEAN_POST
+  CLEAN_POST,
+  EDIT_POST
 } from '../actions/constants';
 
 const initialState = {
@@ -39,6 +40,12 @@ const post = (state = initialState, action) => {
         posts: [payload, ...state.posts],
         loading: false,
       };
+    case EDIT_POST:
+      return {
+        ...state,
+        posts: state.posts.map(post => post._id === payload._id ? payload : post),
+        loading: false
+      }
     case DELETE_POST:
       return {
         ...state,
