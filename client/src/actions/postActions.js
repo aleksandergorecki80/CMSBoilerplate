@@ -169,3 +169,9 @@ export const cleanPost = () => dispatch => {
     type: CLEAN_POST,
   });
 };
+
+
+// Edit post 
+export const editPost = (postId) => async dispatch => {
+    console.log(postId)
+}

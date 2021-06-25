@@ -9,6 +9,7 @@ import Dashboard from './components/dashboard/Dashboard';
 import Posts from './components/posts/Posts';
 import Post from './components/post/Post';
 import PrivateRoute from './components/routing/PrivateRoute';
+import EditPost from './components/post/EditPost';
 import './App.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -39,6 +40,7 @@ const App = () => {
               <Route exact path="/posts" component={Posts} />
               <Route exact path="/posts/:id" component={Post} />
               <PrivateRoute exact path="/dashboard" component={Dashboard} />
+              <PrivateRoute exact path="/posts/edit/:id" component={EditPost} />
             </Switch>
           </section>
         </Fragment>
