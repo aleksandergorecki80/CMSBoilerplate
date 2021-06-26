@@ -175,6 +175,7 @@ export const cleanPost = () => dispatch => {
 // Edit post 
 export const editPost = (postId, formaData) => async dispatch => {
     console.log(postId)
+    console.log(formaData)
     const config = {
         headers: {
             'Content-Type': 'application/json'
@@ -182,11 +183,12 @@ export const editPost = (postId, formaData) => async dispatch => {
     }
     try {
 
-        const res = await axios.put(`/api/posts/edit/${postId}`, config, formaData)
+        const res = await axios.put(`/api/posts/edit/${postId}`, formaData, config)
         dispatch({
             type: EDIT_POST,
             payload: res.data
-        })
+        });
+        dispatch(setAlert('Post edited', 'success'));
     } catch (err) {
         dispatch({
             type: POST_ERROR,

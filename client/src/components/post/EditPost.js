@@ -1,4 +1,5 @@
-import React, { useEffect, Fragment} from 'react'
+import React, { useEffect, Fragment} from 'react';
+
 import PropTypes from 'prop-types'
 import { editPost, getPost } from '../../actions/postActions';
 import { connect } from 'react-redux';
@@ -10,10 +11,10 @@ import CommentItem from './CommentItem';
 const EditPost = ({ getPost, editPost, match,  post: { post, loading }}) => {
     useEffect(() => {
         getPost(match.params.id);
-     }, [getPost]);  
+     }, [getPost]); 
     return (
         loading || post === null ? <Spinner /> : (<Fragment>
-            <PostForm post={post} showActions={true} match={match} editPost={editPost} />
+            <PostForm post={post} showActions={true} match={match} editPost={editPost} editMode={true}/>
             <CommentForm postId={post._id} />
             <div>
                 {post.comments.map(comment => (
