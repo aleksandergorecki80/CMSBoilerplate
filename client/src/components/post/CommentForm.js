@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { addComment } from '../../actions/postActions';
+import { addComment, editComment } from '../../actions/postActions';
 import { Form, Button } from 'react-bootstrap';
 
 const CommentForm = ({ postId, addComment }) => {
@@ -55,6 +55,7 @@ const CommentForm = ({ postId, addComment }) => {
 
 CommentForm.propTypes = {
   addComment: PropTypes.func.isRequired,
+  editComment: PropTypes.func.isRequired,
 };
 
-export default connect(null, { addComment })(CommentForm);
+export default connect(null, { addComment, editComment })(CommentForm);

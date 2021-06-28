@@ -8,6 +8,7 @@ import {
     ADD_POST,
     GET_POST,
     ADD_COMMENT,
+    EDIT_COMMENT,
     REMOVE_COMMENT,
     CLEAN_POST,
     EDIT_POST
@@ -165,6 +166,29 @@ export const deleteComment = (postId, commentId) => async dispatch => {
     }
 }
 
+// Edit comment
+export const editComment = (postId, commentId, formData) => async dispatch => {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }
+    try {
+        const res = await axios.put(`/api/posts/comment/edit/${postId}/${commentId}`, formData, config);
+
+        dispatch({
+            type: EDIT_COMMENT,
+            payload: res.data
+        });
+        dispatch(setAlert('Comment edited', 'success'));
+    } catch (err) {
+        dispatch({
+            type: POST_ERROR,
+            payload: { msg: err.responseStatusText, status: err.response.status }
+        })
+    }
+}
+
 export const cleanPost = () => dispatch => {
   dispatch({
     type: CLEAN_POST,
@@ -173,9 +197,7 @@ export const cleanPost = () => dispatch => {
 
 
 // Edit post 
-export const editPost = (postId, formaData) => async dispatch => {
-    console.log(postId)
-    console.log(formaData)
+export const editPost = (postId, formData) => async dispatch => {
     const config = {
         headers: {
             'Content-Type': 'application/json'
@@ -183,7 +205,7 @@ export const editPost = (postId, formaData) => async dispatch => {
     }
     try {
 
-        const res = await axios.put(`/api/posts/edit/${postId}`, formaData, config)
+        const res = await axios.put(`/api/posts/edit/${postId}`, formData, config)
         dispatch({
             type: EDIT_POST,
             payload: res.data

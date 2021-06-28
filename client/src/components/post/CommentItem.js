@@ -10,6 +10,7 @@ const CommentItem = ({
   comment: { _id, date, user, userName, title, text },
   deleteComment,
   auth,
+  getDataToEdition
 }) => {
   return (
     <div className="mb-2">
@@ -19,12 +20,20 @@ const CommentItem = ({
             <Card.Title className="d-flex justify-content-between">
               {title}
               {!auth.loading && auth.token && user === auth.user._id && (
-                <Button
+                <div>
+                  <Button
+                    onClick={(e) => getDataToEdition(postId, _id, title, text)}
+                    variant="warning"
+                  >
+                    Edit
+                  </Button>
+                  <Button
                   onClick={(e) => deleteComment(postId, _id)}
                   variant="danger"
                 >
                   Delete
                 </Button>
+                </div>
               )}
             </Card.Title>
             <Card.Text>{text}</Card.Text>
