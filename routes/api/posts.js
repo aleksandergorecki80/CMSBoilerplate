@@ -256,6 +256,44 @@ router.post(
   }
 );
 
+
+
+// @route   PUT api/posts/comment/edit/:id/:comment_id
+// @desc    Edit a comment on post
+// @access  Private
+
+router.put('/comment/edit/:id/:comment_id', auth, async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+
+    // Pull out a comment
+    const comment = post.comments.find(
+      (comment) => req.params.comment_id === comment._id.toString()
+    );
+
+    // Make sure comment exist
+    if (!comment) {
+      return res.status(404).json({ msg: 'Comment does not exist' });
+    }
+
+    // Check the user
+    if (comment.user.toString() !== req.user.id) {
+      return res.status(401).json({ msg: 'User not authorised' });
+    }
+
+    comment.title = req.body.title;
+    comment.text = req.body.text;
+
+    await post.save();
+    
+    res.send(post);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+});
+
+
 // @route   DELETE api/posts/comment/:id/:comment_id
 // @desc    Remove a comment on from post
 // @access  Private
