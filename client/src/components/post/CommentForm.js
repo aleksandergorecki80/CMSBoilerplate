@@ -1,10 +1,10 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { addComment, editComment } from '../../actions/postActions';
+import { addComment } from '../../actions/postActions';
 import { Form, Button } from 'react-bootstrap';
 
-const CommentForm = ({ postId, addComment }) => {
+const CommentForm = ({ postId, addComment, comment }) => {
   const [text, setText] = useState('');
   const [title, setTitle] = useState('');
   const formData = { text, title };
@@ -15,6 +15,15 @@ const CommentForm = ({ postId, addComment }) => {
     setTitle('');
     setText('');
   };
+
+  useEffect(() => {
+if(comment){
+  setTitle(comment.title);
+  setText(comment.text);
+}
+    console.log('ładuj')
+  }, [comment])
+
   return (
     <div className="mb-3">
       <Fragment>
@@ -54,8 +63,11 @@ const CommentForm = ({ postId, addComment }) => {
 };
 
 CommentForm.propTypes = {
-  addComment: PropTypes.func.isRequired,
-  editComment: PropTypes.func.isRequired,
+  addComment: PropTypes.func.isRequired
 };
 
-export default connect(null, { addComment, editComment })(CommentForm);
+const mapStateToProps = state => ({
+  comment: state.post.post.comment_to_edition
+})
+
+export default connect(mapStateToProps, { addComment })(CommentForm);

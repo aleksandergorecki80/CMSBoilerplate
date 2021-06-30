@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
-import { deleteComment } from '../../actions/postActions';
+import { deleteComment, getCommentToEdition } from '../../actions/postActions';
 import { connect } from 'react-redux';
 import { Card, Button } from 'react-bootstrap';
 
@@ -10,7 +10,7 @@ const CommentItem = ({
   comment: { _id, date, user, userName, title, text },
   deleteComment,
   auth,
-  getDataToEdition
+  getCommentToEdition,
 }) => {
   return (
     <div className="mb-2">
@@ -22,7 +22,7 @@ const CommentItem = ({
               {!auth.loading && auth.token && user === auth.user._id && (
                 <div>
                   <Button
-                    onClick={(e) => getDataToEdition(postId, _id, title, text)}
+                    onClick={(e) => getCommentToEdition(_id, title, text)}
                     variant="warning"
                   >
                     Edit
@@ -52,6 +52,7 @@ CommentItem.propTypes = {
   postId: PropTypes.string.isRequired,
   comment: PropTypes.object.isRequired,
   deleteComment: PropTypes.func.isRequired,
+  getCommentToEdition: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
 };
 
@@ -59,4 +60,4 @@ const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps, { deleteComment })(CommentItem);
+export default connect(mapStateToProps, { getCommentToEdition, deleteComment })(CommentItem);
