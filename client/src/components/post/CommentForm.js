@@ -1,27 +1,36 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { addComment } from '../../actions/postActions';
+import { addComment, editComment } from '../../actions/postActions';
 import { Form, Button } from 'react-bootstrap';
 
-const CommentForm = ({ postId, addComment, comment }) => {
+const CommentForm = ({ postId, addComment, comment, editComment }) => {
+
   const [text, setText] = useState('');
   const [title, setTitle] = useState('');
+  const [editMode, setEditMode] = useState(false);
   const formData = { text, title };
+  
 
   const onSubmit = (e) => {
     e.preventDefault();
-    addComment(postId, formData);
+    if(editMode){
+      editComment(postId, comment._id, formData)
+     }
+       else {
+        addComment(postId, formData);
+     }
+    // editMode ? editComment(postId, comment._id, formData) : addComment(postId, formData);
     setTitle('');
     setText('');
   };
 
   useEffect(() => {
-if(comment){
+if(comment !== undefined){
+  setEditMode(true);
   setTitle(comment.title);
   setText(comment.text);
 }
-    console.log('ładuj')
   }, [comment])
 
   return (
@@ -63,11 +72,12 @@ if(comment){
 };
 
 CommentForm.propTypes = {
-  addComment: PropTypes.func.isRequired
+  addComment: PropTypes.func.isRequired,
+  editComment: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
   comment: state.post.post.comment_to_edition
 })
 
-export default connect(mapStateToProps, { addComment })(CommentForm);
+export default connect(mapStateToProps, { addComment, editComment })(CommentForm);

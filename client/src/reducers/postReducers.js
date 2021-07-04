@@ -98,9 +98,7 @@ const post = (state = initialState, action) => {
         ...state,
         post: {
           ...state.post,
-          comments: state.post.comments.map((comment) => {
-            return comment.id === payload._id ? payload : comment;
-          }),
+          comments: payload.comments,
           loading: false,
         },
       };

@@ -16,16 +16,13 @@ const Post = ({ getPost, post: { post, loading }, match }) => {
          return <Redirect to="/posts" />;
      }
 
-     const getDataToEdition = (postId, _id, title, text) => {
-         console.log(postId, _id, title, text);
-     }
     return (
         loading || post === null ? <Spinner /> : (<Fragment>
             <PostItem post={post} showLink={false} showActions={true} match={match}/>
             <CommentForm postId={post._id} />
             <div>
                 {post.comments.map(comment => (
-                    <CommentItem key={comment._id} comment={comment} postId={post._id} getDataToEdition={getDataToEdition}/>
+                    <CommentItem key={comment._id} comment={comment} postId={post._id} />
                 ))}
             </div>
         </Fragment>)
