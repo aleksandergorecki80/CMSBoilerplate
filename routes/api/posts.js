@@ -4,6 +4,54 @@ const auth = require('../../middleware/auth');
 const { check, validationResult } = require('express-validator');
 const User = require('../../models/UserModel');
 const Post = require('../../models/PostModel');
+const multer = require('multer');
+
+// @route   POST api/posts/upload
+// @desc    Upload a photo
+// @access  Private
+
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'client/public/uploads/');
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    cb(null, uniqueSuffix + '-' + file.originalname);
+  },
+});
+
+var upload = multer({
+  storage: storage,
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype == 'image/jpg' || file.mimetype == 'image/jpeg') {
+      cb(null, true);
+    } else {
+      cb(null, false);
+      return cb(new Error('Only .jpg and .jpeg format allowed!'));
+    }
+  },
+  limits: { fileSize: 1048576 },
+});
+
+const uploadSingleImage = upload.single('postImg');
+router.post('/upload', auth, (req, res) => {
+  try {
+    uploadSingleImage(req, res, (err) => {
+      if (err) {
+        return res.status(400).send({ message: err.message });
+      }
+      if (req.file === null) {
+        return res.status(400).json({ message: 'No file uploaded' });
+      }
+      res.status(200).json({
+        filename: req.file.filename,
+      });
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+});
 
 // @route   POST api/posts
 // @desc    Create a post
@@ -98,7 +146,7 @@ router.put(
     ],
   ],
   async (req, res) => {
-    console.log(req.body)
+    console.log(req.body);
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.mapped() });
@@ -117,7 +165,7 @@ router.put(
       post.title = req.body.title;
       post.text = req.body.text;
 
-      await post.save()
+      await post.save();
       res.send(post);
     } catch (err) {
       console.error(err.message);
@@ -128,7 +176,6 @@ router.put(
     }
   }
 );
-
 
 // @route   DELETE api/posts/:id
 // @desc    Remove single post by ID
@@ -256,8 +303,6 @@ router.post(
   }
 );
 
-
-
 // @route   PUT api/posts/comment/edit/:id/:comment_id
 // @desc    Edit a comment on post
 // @access  Private
@@ -285,14 +330,13 @@ router.put('/comment/edit/:id/:comment_id', auth, async (req, res) => {
     comment.text = req.body.text;
 
     await post.save();
-    
+
     res.send(post);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
   }
 });
-
 
 // @route   DELETE api/posts/comment/:id/:comment_id
 // @desc    Remove a comment on from post
