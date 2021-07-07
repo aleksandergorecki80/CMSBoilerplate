@@ -4,24 +4,41 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { addPost } from '../../actions/postActions';
 import { Form, Button } from 'react-bootstrap';
+import axios from 'axios';
 
 const PostForm = ({ addPost, editPost, post, editMode }) => {
   const [text, setText] = useState('');
   const [title, setTitle] = useState('');
-  const [submited, setSubmited] = useState(false) 
+  const [photo, setPhoto] = useState('');
+  const [submited, setSubmited] = useState(false);
   const formData = { text, title };
 
   useEffect(() => {
-    if(editMode){
+    if (editMode) {
       setText(post.text);
       setTitle(post.title);
     }
   }, []);
 
+  const fileSelectedHandler = (event) => {
+    setPhoto(event.target.files[0]);
+  };
+
+  const fileUploadHandler = async () => {
+    const fd = new FormData();
+    fd.append('postImg', photo, photo.name)
+    try {
+      const res = await axios.post('api/posts/upload', fd);
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const onSubmit = (e) => {
     e.preventDefault();
-    if(editMode) {
-      editPost(post._id, formData);     
+    if (editMode) {
+      editPost(post._id, formData);
     } else {
       addPost(formData);
     }
@@ -30,9 +47,13 @@ const PostForm = ({ addPost, editPost, post, editMode }) => {
     setSubmited(true);
   };
 
-  if(submited){
-    return editMode ? <Redirect to={`/posts/${post._id}`} /> : <Redirect to='/posts' />
-    }
+  if (submited) {
+    return editMode ? (
+      <Redirect to={`/posts/${post._id}`} />
+    ) : (
+      <Redirect to="/posts" />
+    );
+  }
 
   return (
     <div>
@@ -40,8 +61,8 @@ const PostForm = ({ addPost, editPost, post, editMode }) => {
       <Form onSubmit={(e) => onSubmit(e)}>
         <Form.Group>
           <Form.Label>Post title</Form.Label>
-          <Form.Control 
-            type="text" 
+          <Form.Control
+            type="text"
             placeholder="Enter title"
             name="title"
             onChange={(e) => setTitle(e.target.value)}
@@ -49,17 +70,28 @@ const PostForm = ({ addPost, editPost, post, editMode }) => {
           />
         </Form.Group>
 
-        <Form.Group 
-            style={{
-                margin: '10px 0 0 0 '
-            }}
+        <Form.Group
+          style={{
+            margin: '10px 0 0 0 ',
+          }}
         >
           <Form.Label>Post tekst</Form.Label>
-          <Form.Control as="textarea" 
+          <Form.Control
+            as="textarea"
             rows={10}
             onChange={(e) => setText(e.target.value)}
             value={text}
           />
+        </Form.Group>
+        <Form.Group>
+          <Form.Label>Add a photo</Form.Label>
+          <Form.File
+            id="exampleFormControlFile1"
+            onChange={fileSelectedHandler}
+          />
+          <Button variant="secondary mt-2" onClick={fileUploadHandler}>
+            Upload
+          </Button>
         </Form.Group>
         <Button variant="success mt-2" type="submit">
           Submit
@@ -70,8 +102,8 @@ const PostForm = ({ addPost, editPost, post, editMode }) => {
 };
 
 PostForm.defaultProps = {
-  editMode: false
-}
+  editMode: false,
+};
 
 PostForm.propTypes = {
   addPost: PropTypes.func.isRequired,
