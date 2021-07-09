@@ -11,6 +11,9 @@ const PostSchema = new mongoose.Schema({
   avatar: {
     type: String,
   },
+  filename: {
+    type: String,
+  },
   title: {
     type: String,
     required: true,

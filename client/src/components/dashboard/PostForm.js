@@ -10,8 +10,9 @@ const PostForm = ({ addPost, editPost, post, editMode }) => {
   const [text, setText] = useState('');
   const [title, setTitle] = useState('');
   const [photo, setPhoto] = useState('');
+  const [filename, setFilename] = useState('Add a photo');
   const [submited, setSubmited] = useState(false);
-  const formData = { text, title };
+  const formData = { text, title, filename };
 
   useEffect(() => {
     if (editMode) {
@@ -28,8 +29,12 @@ const PostForm = ({ addPost, editPost, post, editMode }) => {
     const fd = new FormData();
     fd.append('postImg', photo, photo.name)
     try {
-      const res = await axios.post('api/posts/upload', fd);
-      console.log(res);
+      const res = await axios.post('api/posts/upload', fd, {
+        onUploadProgress: progressEvent => {
+          console.log('progress: ' + progressEvent.loaded / progressEvent.total * 100)
+        }
+      });
+      setFilename(res.data.filename);
     } catch (err) {
       console.log(err);
     }
@@ -84,14 +89,14 @@ const PostForm = ({ addPost, editPost, post, editMode }) => {
           />
         </Form.Group>
         <Form.Group>
-          <Form.Label>Add a photo</Form.Label>
           <Form.File
-            id="exampleFormControlFile1"
+            id="postPhoto"
             onChange={fileSelectedHandler}
           />
           <Button variant="secondary mt-2" onClick={fileUploadHandler}>
             Upload
           </Button>
+
         </Form.Group>
         <Button variant="success mt-2" type="submit">
           Submit

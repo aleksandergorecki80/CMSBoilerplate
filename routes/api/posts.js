@@ -84,6 +84,7 @@ router.post(
         userName: user.name,
         title: req.body.title,
         text: req.body.text,
+        filename: req.body.filename,
         avatar: user.avatar,
       });
       const post = await newPost.save();
