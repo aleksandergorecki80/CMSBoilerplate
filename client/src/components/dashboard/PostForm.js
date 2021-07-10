@@ -5,12 +5,14 @@ import { connect } from 'react-redux';
 import { addPost } from '../../actions/postActions';
 import { Form, Button } from 'react-bootstrap';
 import axios from 'axios';
+import Progress from '../layout/Progress';
 
 const PostForm = ({ addPost, editPost, post, editMode }) => {
   const [text, setText] = useState('');
   const [title, setTitle] = useState('');
   const [photo, setPhoto] = useState('');
   const [filename, setFilename] = useState('Add a photo');
+  const [percentage, setPercentage] = useState(0);
   const [submited, setSubmited] = useState(false);
   const formData = { text, title, filename };
 
@@ -21,23 +23,33 @@ const PostForm = ({ addPost, editPost, post, editMode }) => {
     }
   }, []);
 
+  useEffect(() => {
+    if(percentage === 100){
+      setTimeout(() => {
+        setPercentage(0);
+      }, 3000);
+    }
+  }, [percentage]);
+
   const fileSelectedHandler = (event) => {
     setPhoto(event.target.files[0]);
   };
 
   const fileUploadHandler = async () => {
-    const fd = new FormData();
+    if(photo){
+      const fd = new FormData();
     fd.append('postImg', photo, photo.name)
     try {
       const res = await axios.post('api/posts/upload', fd, {
         onUploadProgress: progressEvent => {
-          console.log('progress: ' + progressEvent.loaded / progressEvent.total * 100)
+          console.log('progress: ' + progressEvent.loaded / progressEvent.total * 100);
+          setPercentage(progressEvent.loaded / progressEvent.total * 100);
         }
       });
       setFilename(res.data.filename);
     } catch (err) {
       console.log(err);
-    }
+    }}
   };
 
   const onSubmit = (e) => {
@@ -72,6 +84,7 @@ const PostForm = ({ addPost, editPost, post, editMode }) => {
             name="title"
             onChange={(e) => setTitle(e.target.value)}
             value={title}
+            required
           />
         </Form.Group>
 
@@ -86,6 +99,7 @@ const PostForm = ({ addPost, editPost, post, editMode }) => {
             rows={10}
             onChange={(e) => setText(e.target.value)}
             value={text}
+            required
           />
         </Form.Group>
         <Form.Group>
@@ -96,7 +110,8 @@ const PostForm = ({ addPost, editPost, post, editMode }) => {
           <Button variant="secondary mt-2" onClick={fileUploadHandler}>
             Upload
           </Button>
-
+          <Progress percentage={percentage} />
+          {filename !== 'Add a photo' && <img src={`/uploads/${filename}`} alt='Post img' />}
         </Form.Group>
         <Button variant="success mt-2" type="submit">
           Submit
