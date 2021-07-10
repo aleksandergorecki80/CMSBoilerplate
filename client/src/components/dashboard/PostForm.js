@@ -20,8 +20,13 @@ const PostForm = ({ addPost, editPost, post, editMode }) => {
     if (editMode) {
       setText(post.text);
       setTitle(post.title);
+      setFilename(post.filename);
     }
   }, []);
+
+  useEffect(() => {
+    console.log('zmień fote')
+  }, [filename])
 
   useEffect(() => {
     if(percentage === 100){
@@ -40,7 +45,7 @@ const PostForm = ({ addPost, editPost, post, editMode }) => {
       const fd = new FormData();
     fd.append('postImg', photo, photo.name)
     try {
-      const res = await axios.post('api/posts/upload', fd, {
+      const res = await axios.post('/api/posts/upload', fd, {
         onUploadProgress: progressEvent => {
           console.log('progress: ' + progressEvent.loaded / progressEvent.total * 100);
           setPercentage(progressEvent.loaded / progressEvent.total * 100);

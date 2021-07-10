@@ -10,7 +10,7 @@ import ThumbIcon from '../layout/Thumb';
 
 const PostItem = ({
   auth,
-  post: { _id, user, userName, avatar, title, text, likes, comments, date },
+  post: { _id, user, userName, avatar, title, text, likes, comments, date, filename },
   addLike,
   removeLike,
   deletePost,
@@ -23,6 +23,7 @@ const PostItem = ({
  return (
     <Fragment>
       <Card className="mb-3 mt-3">
+      <Card.Img variant="top" src={`/uploads/${filename}`} className="post-img"/>
         <Card.Body>
           <Card.Title className="d-flex justify-content-between">
             {showLink ? (

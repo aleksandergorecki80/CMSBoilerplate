@@ -147,7 +147,6 @@ router.put(
     ],
   ],
   async (req, res) => {
-    console.log(req.body);
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.mapped() });
@@ -165,6 +164,7 @@ router.put(
 
       post.title = req.body.title;
       post.text = req.body.text;
+      post.filename = req.body.filename;
 
       await post.save();
       res.send(post);
